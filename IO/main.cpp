@@ -1,29 +1,52 @@
-#include <iostream>
+// #include <string>
+// #include <iostream>
+// #include <sstream>
+
+// using namespace std;
+
+// int main(void){
+    
+//     string sentence;
+//     string word;
+
+//     cout << "Enter a sentence: ";
+//     getline (cin, sentence);
+    
+//     stringstream stream;
+//     // here we are using the stringstream object to read from the string
+//     stream.str(sentence);
+
+//     while (stream >> word){
+//         // we can also use istringstream to read from the string
+//         istringstream iss(word);
+//         double number;
+
+//         // if the word is a number, we can convert it to a number
+//         if (iss >> number){
+//             cout << number * 2 << endl;
+//         } else {
+//             cout << word << endl;
+//         }
+//     }
+
+//     return 0;
+// }
+
 #include <string>
+#include <iostream>
 #include <sstream>
 
 using namespace std;
 
-int main()
-{
+int main(void){
+
     string sentence;
+    string word;
+    stringstream stream;
+
     cout << "Enter a sentence: ";
     getline(cin, sentence);
-    cout << "The sentence: " << sentence << endl;
 
-    stringstream str(sentence);
-    string buffer;
-    while (str >> buffer)
-    {
-        cout << buffer << endl;
-
-        // if word is a numeric value, print double the value
-        if (isdigit(buffer[0]))
-        {
-            int num = stoi(buffer);
-            cout << num * 2 << endl;
-        }
-    }
 
     return 0;
 }

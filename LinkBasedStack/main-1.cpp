@@ -18,6 +18,7 @@ class Stack
 {
 private:
     Node *head;
+    int count = 0;
 public:
 
     Stack()
@@ -34,6 +35,8 @@ public:
             temp->next = head;
             head = temp;
         }
+
+        count++;
     }
 
     int pop()
@@ -46,6 +49,7 @@ public:
             Node *temp = head;
 
             head = head->next;
+            count--;
 
             delete temp;
 
@@ -67,7 +71,7 @@ public:
 
     bool isEmpty()
     {
-        return head == 0;
+        return count == 0;
     };
 
 };
