@@ -2,26 +2,41 @@
 
 using namespace std;
 
-// struct Node {
-//     int data;
-//     Node* next;
-//     Node* prev;
+class Node{
 
-//     Node(int data){
-//         this->data = data;
-//         this->next = nullptr;
-//         this->prev = nullptr;
-//     }
-// };
+    private:
+    int data;
+    Node* next;
 
-// struct Node {
-//     int datal
-//     Node* next;
-//     Node* prev;
+    public:
+    Node(int data) : data(data), next(nullptr) {}
+        
+};
 
-//     Node(int value){
-//         this->data = value;
-//         this->next = nullptr;
-//         this->prev = nullptr;
-//     }
-// }
+class LL{
+
+    private:
+    Node* head;
+
+    public:
+    LL() : head(nullptr) {}
+    Node* curr = head;
+
+    void insert(int data){
+        if(!head){
+            head = new Node(data);
+            curr = head;
+        }else{
+            curr->next = new Node(data);
+            curr = curr->next;
+        }
+    }
+
+
+
+}
+
+
+int main(void){
+
+}
