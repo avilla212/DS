@@ -46,9 +46,10 @@ Collison Resolution:
 
 using namespace std;
 
-class Node
-{
-    public:
+void const menu();
+
+class Node {
+public:
     int key;
     string value;
     Node* next;
@@ -56,107 +57,103 @@ class Node
     Node(int key, string value) : key(key), value(value), next(nullptr) {}
 };
 
-class LinkedList
+
+class LinkedList 
 {
-    public:
-    Node *head;
+public:
+    Node* head;
 
     LinkedList() : head(nullptr) {}
-
-    void const insert(int key, string value){ 
+    
+    void insert(int key, string value) { // Insert at beginning
         Node* newNode = new Node(key, value);
         newNode->next = head;
         head = newNode;
-    };
-
-    string const find(int key){
-        Node* curr = head;
-
-        while(curr){
-            if (curr->key == key){
-                return curr->value;
-            }
-            curr = curr->next;
-        }
-
-        return "Not Found";
     }
 
-    bool remove(int key) {
-        Node* curr = head;
-        Node* prev = nullptr;
+    string find(int key) { // Find by key
+        Node* current = head;
 
-        while (curr){
-            if (curr->key == key){
-                if (prev == nullptr){
-                    head = curr->next;
+        while (current) {
+            if (current->key == key) { // Key found
+                return current->value;
+            }
+            current = current->next;
+        }
+        return "Not found";
+    }
+
+    bool remove(int key) { // Remove by key
+        Node* current = head;
+        Node* previous = nullptr; // Keep track of prev node to update next pointer
+
+        while (current) {
+            if (current->key == key) {
+                if (previous == nullptr) { // If key is in head node 
+                    head = current->next;
                 } else {
-                    prev->next = curr->next;
+                    previous->next = current->next;
                 }
-                delete curr;
+                delete current; // Free memory
                 return true;
             }
-            prev = curr;
-            curr = curr->next;
+            previous = current; // Update prev to stay one step behind
+            current = current->next;
         }
-
         return false;
     }
 
-    void const print(){
-        Node* curr = head;
-        while (curr){
-            cout << curr->key << ":" << curr->value << "->";
-            curr = curr->next;
+    void print() {
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->key << ":" << current->value << " -> ";
+            current = current->next;
         }
-
+        cout << "None\n";
     }
 };
 
-class HashTable
+class HashTable 
 {
-    private:
-        LinkedList* table;
-        int size;
+private:
+    LinkedList* table;
+    int size;
 
-        int hash(int key){
-            return key % size;
+    int hashFunction(int key) {
+        return key % size; // Modulus hash function
+    }
+
+public:
+    HashTable(int size) : size(size) {
+        table = new LinkedList[size];
+    }
+
+    void insert(int key, string value) {
+        int index = hashFunction(key);
+        table[index].insert(key, value); // Insert into linked list
+    }
+
+    string find(int key) {
+        int index = hashFunction(key);
+        return table[index].find(key); // Find in linked list
+    }
+
+    bool remove(int key) {
+        int index = hashFunction(key);
+        return table[index].remove(key); // Remove from linked list
+    }
+
+    void print() {
+        for (int i = 0; i < size; i++) {
+            cout << "Bucket " << i << ": ";
+            table[i].print();
         }
-
-    public:
-        HashTable(int size) : size(size) {
-            table = new LinkedList[size];
-        }
-
-        void const insert(int key, string value){
-            int index = hash(key);
-            table[index].insert(key,value);
-        }
-
-        string const find(int key){
-            int index = hash(key);
-
-            return table[index].find(key);
-        }
-
-        bool remove(int key){
-            int index = hash(key);
-            return table[index].remove(key);
-        }
-
-        void const print(){
-            for (int i = 0; i < size; i++){
-                cout << "Bucket " << i << ": ";
-                table[i].print();
-            }
-        }
-
-
+    }
 };
 
-int main(void){
-    HashTable ht(10);
-    
+void const menu() {
+    HashTable ht(10); 
+
     int key;
     string value;
     char choice;
@@ -175,18 +172,22 @@ int main(void){
             case '1':
                 cout << "Enter key: ";
                 cin >> key;
+
                 cout << "Enter value: ";
                 cin >> value;
+
                 ht.insert(key, value);
                 break;
             case '2':
                 cout << "Enter key: ";
                 cin >> key;
+
                 cout << "Lookup result: " << ht.find(key) << endl;
                 break;
             case '3':
                 cout << "Enter key: ";
                 cin >> key;
+
                 if (ht.remove(key)) {
                     cout << "Key " << key << " deleted successfully." << endl;
                 } else {
@@ -204,3 +205,110 @@ int main(void){
         }
     } while (choice != '5');
 }
+
+int main(void) 
+{
+    menu();
+}
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 1 
+// Enter key: 1
+// Enter value: alex
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 4
+// Bucket 0: None
+// Bucket 1: 1:alex -> None
+// Bucket 2: None
+// Bucket 3: None
+// Bucket 4: None
+// Bucket 5: None
+// Bucket 6: None
+// Bucket 7: None
+// Bucket 8: None
+// Bucket 9: None
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 1
+// Enter key: 2
+// Enter value: james
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 4
+// Bucket 0: None
+// Bucket 1: 1:alex -> None
+// Bucket 2: 2:james -> None
+// Bucket 3: None
+// Bucket 4: None
+// Bucket 5: None
+// Bucket 6: None
+// Bucket 7: None
+// Bucket 8: None
+// Bucket 9: None
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 2
+// Enter key: 2
+// Lookup result: james
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 3
+// Enter key: 2
+// Key 2 deleted successfully.
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 4
+// Bucket 0: None
+// Bucket 1: 1:alex -> None
+// Bucket 2: None
+// Bucket 3: None
+// Bucket 4: None
+// Bucket 5: None
+// Bucket 6: None
+// Bucket 7: None
+// Bucket 8: None
+// Bucket 9: None
+
+// Menu:
+// 1. Add (Key, Value)
+// 2. Lookup (Key)
+// 3. Delete (Key)
+// 4. Print Hash Table
+// 5. Exit
+// Enter choice: 5
